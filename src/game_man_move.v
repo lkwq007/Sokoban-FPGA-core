@@ -22,8 +22,8 @@ module game_man_move(game_state,cursor,game_state_next,result);
 	wire[2:0] man_x,man_y,cursor_x,cursor_y;
 	reg[2:0] next_x,next_y,skip_x,skip_y;
 	reg[5:0] man_next;
-	reg[63:0] box_next,way_next
-	assign game_state_next= ;
+	reg[63:0] box_next,way_next;
+	assign game_state_next={way_next,box_next,man_next};
 	assign way=game_state[133:70];
 	assign box=game_state[69:6];
 	assign man_x=game_state[2:0];

@@ -12,7 +12,7 @@
 //
 //==================================================================================================
 module game_controller(clk,game_state,move_result,destination,cursor,retry,retract,left,game_area,reset,right,stage,stage_up,game_state_en,sel,win);
-	parameter RESET=4`h0,INIT=4'h1,WAIT=4`h2,PAUSE=4`h3,OVER=4`h4,NEXT=4`h5,INTERIM=4`h6,RETRACT=4`h7,MOVE=4`h8;
+	parameter RESET=4'h0,INIT=4'h1,WAIT=4'h2,PAUSE=4'h3,OVER=4'h4,NEXT=4'h5,INTERIM=4'h6,RETRACT=4'h7,MOVE=4'h8;
 	input clk,retry,retract,left,game_area,reset,right,move_result;
 	input[5:0] cursor;
 	input[63:0] destination;
@@ -21,7 +21,7 @@ module game_controller(clk,game_state,move_result,destination,cursor,retry,retra
 	output game_state_en,stage_up,win;
 	reg game_state_en,stage_up,win;
 	output[1:0] sel;
-	reg[1:0] sel
+	reg[1:0] sel;
 	wire[63:0] way,box;
 	assign way=game_state[133:70];
 	reg[3:0] state;
@@ -33,21 +33,21 @@ module game_controller(clk,game_state,move_result,destination,cursor,retry,retra
 				state=state;
 			end
 			case(state)
-				case RESET: begin
+				RESET: begin
 					sel=0;
 					win=0;
 					stage_up=0;
 					game_state_en=1;
 					state=INIT;
 				end
-				case INIT: begin
+				INIT: begin
 					sel=0;
 					win=0;
 					stage_up=0;
 					game_state_en=1;
 					state=WAIT;
 				end
-				case WAIT: begin
+				WAIT: begin
 					sel=0;
 					win=0;
 					stage_up=0;
@@ -69,7 +69,7 @@ module game_controller(clk,game_state,move_result,destination,cursor,retry,retra
 						end
 					end
 				end
-				case PAUSE: begin
+				PAUSE: begin
 					sel=0;
 					win=0;
 					stage_up=0;
@@ -81,21 +81,21 @@ module game_controller(clk,game_state,move_result,destination,cursor,retry,retra
 						state=PAUSE;
 					end
 				end
-				case NEXT: begin
+				NEXT: begin
 					sel=0;
 					win=0;
 					stage_up=1;
 					game_state_en=0;
 					state=INIT;
 				end
-				case OVER: begin
+				OVER: begin
 					sel=0;
 					win=1;
 					stage_up=0;
 					game_state_en=0;
 					state=OVER;
 				end
-				case INTERIM: begin
+				INTERIM: begin
 					if(retry) begin
 						state=INIT;
 					end
@@ -109,14 +109,14 @@ module game_controller(clk,game_state,move_result,destination,cursor,retry,retra
 						state=WAIT;
 					end
 				end
-				case RETRACT: begin
+				RETRACT: begin
 					sel=3;
 					win=0;
 					stage_up=0;
 					game_state_en=1;
 					state=WAIT;
 				end
-				case MOVE: begin
+				MOVE: begin
 					sel=1;
 					win=0;
 					stage_up=0;
