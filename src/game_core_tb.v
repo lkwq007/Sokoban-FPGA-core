@@ -1,7 +1,7 @@
 //==================================================================================================
 //  Filename      : game_core_tb.v
 //  Created On    : 2017-07-05 14:49:42
-//  Last Modified : 2017-07-05 15:08:01
+//  Last Modified : 2017-07-05 15:23:40
 //  Revision      : 
 //  Author        : Lnyan
 //  Company       : College of Information Science and Electronic Engineering, Zhejiang University
@@ -26,9 +26,16 @@ module game_core_tb;
 		game_area=0;
 		retract=0;
 		left=0;
+		right=1;
+		cursor=6'b0;
+		retry=0;
+		#(delay/2)
+		clk=~clk;
+		right=1;
+		#(delay/2)
+		clk=~clk;
 		right=0;
-		cursor=0;
-		#delay/2
+		#(delay/2)
 		clk=~clk;
 	end
 

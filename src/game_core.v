@@ -1,7 +1,7 @@
 //==================================================================================================
 //  Filename      : game_core.v
 //  Created On    : 2017-07-04 14:33:01
-//  Last Modified : 2017-07-05 11:18:08
+//  Last Modified : 2017-07-05 15:24:31
 //  Revision      : 
 //  Author        : Lnyan
 //  Company       : College of Information Science and Electronic Engineering, Zhejiang University
@@ -11,7 +11,7 @@
 //
 //
 //==================================================================================================
-module game_core(clk,cursor,game_area,retract,retry,left,right,wall,way,box,destination,man,stage,win);
+module game_core(clk,cursor,game_area,retract,retry,left,right,wall,way,box,destination,man,stage,win,reset);
 	input clk,game_area,retract,retry,left,right;
     input[5:0] cursor;
     output win;
