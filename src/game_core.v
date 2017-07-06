@@ -12,7 +12,7 @@
 //
 //==================================================================================================
 module game_core(clk,cursor,game_area,retract,retry,left,right,wall,way,box,destination,man,stage,win,reset);
-	input clk,game_area,retract,retry,left,right;
+	  input clk,game_area,retract,retry,left,right,reset;
     input[5:0] cursor;
     output win;
     output[1:0] stage;

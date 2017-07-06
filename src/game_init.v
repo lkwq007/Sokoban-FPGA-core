@@ -15,9 +15,9 @@ module game_init(stage,wall,destination,game_state_int);
 	// temporarily using the design described in the textbook, may using rom for improve
 	input[1:0] stage;
 	output[63:0] wall,destination;
-	output[163:0] game_state_int;
+	output[133:0] game_state_int;
 	reg[63:0] wall,destination;
-	reg[163:0] game_state_int;
+	reg[133:0] game_state_int;
 	always @(*) begin
 		case(stage)
 			0: begin

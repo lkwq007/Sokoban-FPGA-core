@@ -26,6 +26,7 @@ module game_man_move(game_state,cursor,game_state_next,result);
 	assign game_state_next={way_next,box_next,man_next};
 	assign way=game_state[133:70];
 	assign box=game_state[69:6];
+	assign man=game_state[5:0];
 	assign man_x=game_state[2:0];
 	assign man_y=game_state[5:3];
 	assign cursor_x=cursor[2:0];
@@ -42,7 +43,7 @@ module game_man_move(game_state,cursor,game_state_next,result);
 			else begin
 				next_x=man_x;
 				next_y=man_y+1;
-				skip_y=man_x;
+				skip_x=man_x;
 				skip_y=man_y+2;
 			end
 		end

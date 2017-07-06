@@ -17,7 +17,7 @@ module game_controller(clk,game_state,move_result,destination,cursor,retry,retra
 	input[5:0] cursor;
 	input[63:0] destination;
 	input[1:0] stage;
-	input[134:0] game_state;
+	input[133:0] game_state;
 	output game_state_en,stage_up,win;
 	reg game_state_en,stage_up,win;
 	output[1:0] sel;
