@@ -1,7 +1,7 @@
 //==================================================================================================
 //  Filename      : game_dffre.v
 //  Created On    : 2017-07-04 15:41:16
-//  Last Modified : 2017-07-04 15:43:42
+//  Last Modified : 2017-07-06 11:03:02
 //  Revision      : 
 //  Author        : Lnyan
 //  Company       : College of Information Science and Electronic Engineering, Zhejiang University
@@ -16,7 +16,7 @@ module dffre(d,en,r,clk,q);
 	input en,r,clk;
 	input[N-1:0] d;
 	output[N-1:0] q;
-	reg[N-1:0] q;
+	reg[N-1:0] q=0;
 	always @(posedge clk) begin
 		if(r==1) begin
 			q=0;
