@@ -18,7 +18,7 @@ module game_core(clk,cursor,game_area,retract,retry,left,right,wall,way,box,dest
     output[1:0] stage;
     output[5:0] man;
     output[63:0] wall,destination,box,way;
-    wire game_state_en,stage_up,win,move_result,rst,reset;
+    wire game_state_en,stage_up,win,move_result,rst;
     wire[133:0] game_state,game_state_int,game_state_next;
     wire[1:0] sel;
 

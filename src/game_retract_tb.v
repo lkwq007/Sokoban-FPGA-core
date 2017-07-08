@@ -24,7 +24,8 @@ module game_retract_tb();
 		game_state_int={6'd0,{128{1'b1}}};
 		game_state_mm={6'd2,{128{1'b1}}};
 		game_state_bm={6'd1,{128{1'b1}}};
-		game_state_en=0;
+		game_state_en=1;
+		$fscanf('h8000_0000,"%d", game_state_en);
 		#10
 		#10
 		game_state_en=1;
