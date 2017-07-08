@@ -1,0 +1,3 @@
+[submodule "uut/cocotb"]
+	path = uut/cocotb
+	url = https://github.com/potentialventures/cocotb.git
