@@ -8,23 +8,12 @@ from cocotb.regression import TestFactory
 from cocotb.scoreboard import Scoreboard
 from cocotb.result import TestFailure, TestSuccess
 import random
-#from Tkinter import *
-# using cocotb with iverilog (modelsim can also work) 
-def key(event):
-	return event
-def lmouse_callback(event):
-	return event
-def rmouse_callback(event):
-	return event
+from tkinter import *
 
-@cocotb.coroutine
-def clock_gen(signal):
-	while True:
-		signal<=0
-		yield Timer(100)
-		signal<=1
-		yield Timer(100)
-
+# since comparing 134 bit wire is wried and tedious
+# using cocotb + tkinter + iverilog (modelsim can also work) to simluate game_core design
+width=50
+height=50
 def dut_init(dut):
 	dut.clk=0
 	dut.game_area=0
@@ -35,34 +24,79 @@ def dut_init(dut):
 	dut.reset=0
 	dut.cursor=0
 
-def reset(dut):
-	dut.reset=1
+def key(event,dut,flag,block):
+	print(event.char)
+	if event.char==27:
+		flag=False
+	elif event.char=='a':
+		dut.game_area=1-int(dut.game_area)
+	elif event.char=='e':
+		dut.reset=1-int(dut.reset)
+	elif event.char=='r':
+		dut.retry=1-int(dut.retry)
+	elif event.char=='t':
+		dut.retract=1-int(dut.retract)
+	else:
+		block.set(0)
 
-def retry(dut):
-	dut.retry=1
+def motion(event,dut):
+	cursor=event.y//height*8+event.x//width
+	dut.cursor=cursor
 
-def left(dut):
+def lmouse(event,dut,block):
+	cursor=event.y//height*8+event.x//width
+	dut.cursor=cursor
 	dut.left=1
+	block.set(0)
 
-def game_area(dut):
-	dut.game_area=1
+def draw_object(mask,canvas,color,size):
+	for i in range(64):
+		if mask[i]=='1':
+			canvas.create_rectangle(i%8*width,i//8*height,i%8*width+size,i//8*height+size,fill=color)
 
-def retract(dut):
-	dut.retract=1
+def gather_output(dut,canvas):
+	canvas.delete(ALL)
+	wall=str(dut.wall)
+	way=str(dut.way)
+	box=str(dut.box)
+	destination=str(dut.destination)
+	x=int(dut.man)
+	draw_object(wall,canvas,'black',50)
+	draw_object(way,canvas,'green',45)
+	draw_object(destination,canvas,'red',43)
+	draw_object(box,canvas,'blue',42)
+	canvas.create_rectangle(x%8*50,x//8*50,x%8*50+20,x//8*50+20,fill='yellow')
+	print(x)
+
 
 @cocotb.test()
-def game_core_gui_test(dut):
+def game_core_test(dut):
 	flag=True
+	# init sokoban gui
+	gui=Tk()
+	block=IntVar()
+	block.set(1)
+	canvas=Canvas(gui,width=400,height=400)
+	canvas.bind("<Key>",lambda event: key(event,dut,flag,block))
+	canvas.focus_set()
+	canvas.bind("<Button-1>",lambda event: lmouse(event,dut,block))
+	canvas.pack()
+	label=Label(gui,text="Reset: "+str(dut.reset)+"; Area: "+str(dut.game_area)+"; Retry: "+str(dut.retry)+"; Retract: "+str(dut.retract)+"; Stage: "+str(dut.stage)+"; Win:"+str(dut.win))
+	label.pack()
+	# init all input signal
 	dut_init(dut)
-	#gui=Tk()
 	while flag:
-		x=input("num:")
-		yield ClockCycles(dut.clk,1)
-		dut._log.info(str(dut.clk))
-		if x==0:
-			flag=False
-		if x==1:
-			retract(dut)
+		dut.clk=0
+		yield Timer(100)
+		dut.clk=1
+		yield Timer(100)
+		gather_output(dut,canvas)
+		label.config(text="Reset: "+str(dut.reset)+"; Area: "+str(dut.game_area)+"; Retry: "+str(dut.retry)+"; Retract: "+str(dut.retract)+"; Stage: "+str(dut.stage)+"; Win:"+str(dut.win))
+		dut.left=0
+		dut._log.info("stage: "+str(dut.stage)+"win: "+str(dut.win))
+		gui.wait_variable(block)
+
+		gui.update()
+	x=input("quit?")
+	gui.quit()
 	yield Timer(200)
-	dut._log.info(str(dut.box))
-	dut._log.info(str(dut.man))
