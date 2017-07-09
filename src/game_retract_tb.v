@@ -1,7 +1,7 @@
 //==================================================================================================
 //  Filename      : game_retract_tb.v
 //  Created On    : 2017-07-06 10:28:47
-//  Last Modified : 2017-07-06 11:13:54
+//  Last Modified : 2017-07-09 22:53:01
 //  Revision      : 
 //  Author        : Lnyan
 //  Email         : lkwq007@gmail.com or i@llonely.com
@@ -24,8 +24,7 @@ module game_retract_tb();
 		game_state_int={6'd0,{128{1'b1}}};
 		game_state_mm={6'd2,{128{1'b1}}};
 		game_state_bm={6'd1,{128{1'b1}}};
-		game_state_en=1;
-		$fscanf('h8000_0000,"%d", game_state_en);
+		game_state_en=0;
 		#10
 		#10
 		game_state_en=1;
