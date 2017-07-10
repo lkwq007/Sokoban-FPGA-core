@@ -1,7 +1,7 @@
 //==================================================================================================
 //  Filename      : game_man_move.v
 //  Created On    : 2017-07-04 15:21:33
-//  Last Modified : 2017-07-05 10:35:42
+//  Last Modified : 2017-07-10 09:47:18
 //  Revision      : 
 //  Author        : Lnyan
 //  Company       : College of Information Science and Electronic Engineering, Zhejiang University
@@ -31,38 +31,12 @@ module game_man_move(game_state,cursor,game_state_next,result);
 	assign man_y=game_state[5:3];
 	assign cursor_x=cursor[2:0];
 	assign cursor_y=cursor[5:3];
+	reg temp;
 	// will never check boundary as x, y cannot be 0 or 7
 	always @(*) begin
-		if(man_x>cursor_x&&man_y>cursor_y) begin
+		temp=way[man];
+		if(man_x>=cursor_x&&man_y>=cursor_y) begin
 			if(man_x-cursor_x>man_y-cursor_y) begin
-				next_x=man_x+1;
-				next_y=man_y;
-				skip_x=man_x+2;
-				skip_y=man_y;
-			end
-			else begin
-				next_x=man_x;
-				next_y=man_y+1;
-				skip_x=man_x;
-				skip_y=man_y+2;
-			end
-		end
-		else if(man_x>cursor_x&&man_y<cursor_y) begin
-			if(man_x-cursor_x>cursor_y-man_y) begin
-				next_x=man_x+1;
-				next_y=man_y;
-				skip_x=man_x+2;
-				skip_y=man_y;
-			end
-			else begin
-				next_x=man_x;
-				next_y=man_y-1;
-				skip_x=man_x;
-				skip_y=man_y-2;
-			end
-		end
-		else if(man_x<cursor_x&&man_y<cursor_y) begin
-			if(cursor_x-man_x>cursor_y-man_y) begin
 				next_x=man_x-1;
 				next_y=man_y;
 				skip_x=man_x-2;
@@ -73,23 +47,57 @@ module game_man_move(game_state,cursor,game_state_next,result);
 				next_y=man_y-1;
 				skip_x=man_x;
 				skip_y=man_y-2;
+			end
+		end
+		else if(man_x>=cursor_x&&man_y<=cursor_y) begin
+			if(man_x-cursor_x>cursor_y-man_y) begin
+				next_x=man_x-1;
+				next_y=man_y;
+				skip_x=man_x-2;
+				skip_y=man_y;
+			end
+			else begin
+				next_x=man_x;
+				next_y=man_y+1;
+				skip_x=man_x;
+				skip_y=man_y+2;
+			end
+		end
+		else if(man_x<=cursor_x&&man_y<=cursor_y) begin
+			if(cursor_x-man_x>cursor_y-man_y) begin
+				next_x=man_x+1;
+				next_y=man_y;
+				skip_x=man_x+2;
+				skip_y=man_y;
+			end
+			else begin
+				next_x=man_x;
+				next_y=man_y+1;
+				skip_x=man_x;
+				skip_y=man_y+2;
 			end
 		end
 		else begin
 			if(cursor_x-man_x>man_y-cursor_y) begin
-				next_x=man_x-1;
+				next_x=man_x+1;
 				next_y=man_y;
-				skip_x=man_x-2;
+				skip_x=man_x+2;
 				skip_y=man_y;
 			end
 			else begin
 				next_x=man_x;
-				next_y=man_y+1;
+				next_y=man_y-1;
 				skip_x=man_x;
-				skip_y=man_y+2;
+				skip_y=man_y-2;
 			end
 		end
-		if(way[{next_y,next_x}]) begin
+		if(cursor==man) begin
+			box_next=box;
+			way_next=way;
+			man_next=man;
+			result=1'b0;
+		end
+		else if(way[{next_y,next_x}]) begin
 			box_next=box;
 			way_next=way;
 			man_next={next_y,next_x};
@@ -102,7 +110,7 @@ module game_man_move(game_state,cursor,game_state_next,result);
 				way_next[{skip_y,skip_x}]=1'b0;
 				box_next=box;
 				box_next[{next_y,next_x}]=1'b0;
-				box_next[{skip_y,skip_x}]=1'b0;
+				box_next[{skip_y,skip_x}]=1'b1;
 				man_next={next_y,next_x};
 				result=1'b1;
 			end
