@@ -1,7 +1,7 @@
 //==================================================================================================
 //  Filename      : game_controller.v
 //  Created On    : 2017-07-04 15:49:11
-//  Last Modified : 2017-07-05 10:58:14
+//  Last Modified : 2017-07-10 10:36:13
 //  Revision      : 
 //  Author        : Lnyan
 //  Company       : College of Information Science and Electronic Engineering, Zhejiang University
@@ -24,112 +24,116 @@ module game_controller(clk,game_state,move_result,destination,cursor,retry,retra
 	reg[1:0] sel;
 	wire[63:0] way,box;
 	assign way=game_state[133:70];
-	reg[3:0] state;
+	assign box=game_state[69:6];
+	reg[3:0] state=0;
 	always @(posedge clk) begin
 			if (reset||right) begin
-				state=reset;
+				state=RESET;
+				sel=0;
+				win=0;
+				stage_up=0;
+				game_state_en=1;
 			end
 			else begin
-				state=state;
-			end
-			case(state)
-				RESET: begin
-					sel=0;
-					win=0;
-					stage_up=0;
-					game_state_en=1;
-					state=INIT;
-				end
-				INIT: begin
-					sel=0;
-					win=0;
-					stage_up=0;
-					game_state_en=1;
-					state=WAIT;
-				end
-				WAIT: begin
-					sel=0;
-					win=0;
-					stage_up=0;
-					game_state_en=0;
-					if(box==destination) begin
-						if(state==2) begin
-							state=OVER;
+				case(state)
+					RESET: begin
+						sel=0;
+						win=0;
+						stage_up=0;
+						game_state_en=1;
+						state=INIT;
+					end
+					INIT: begin
+						sel=0;
+						win=0;
+						stage_up=0;
+						game_state_en=1;
+						state=WAIT;
+					end
+					WAIT: begin
+						sel=0;
+						win=0;
+						stage_up=0;
+						game_state_en=0;
+						if(box==destination) begin
+							if(stage==2) begin
+								state=OVER;
+							end
+							else begin
+								state=PAUSE;
+							end
+						end
+						else begin
+							if(left) begin
+								state=INTERIM;
+							end
+							else begin
+								state=WAIT;
+							end
+						end
+					end
+					PAUSE: begin
+						sel=0;
+						win=0;
+						stage_up=0;
+						game_state_en=0;
+						if(left) begin
+							state=NEXT;
 						end
 						else begin
 							state=PAUSE;
 						end
 					end
-					else begin
-						if(left) begin
-							state=INTERIM;
+					NEXT: begin
+						sel=0;
+						win=0;
+						stage_up=1;
+						game_state_en=0;
+						state=INIT;
+					end
+					OVER: begin
+						sel=0;
+						win=1;
+						stage_up=0;
+						game_state_en=0;
+						state=OVER;
+					end
+					INTERIM: begin
+						if(retry) begin
+							state=INIT;
+						end
+						else if(retract) begin
+							state=RETRACT;
+						end
+						else if(game_area&&move_result) begin
+							state=MOVE;
 						end
 						else begin
 							state=WAIT;
 						end
 					end
-				end
-				PAUSE: begin
-					sel=0;
-					win=0;
-					stage_up=0;
-					game_state_en=0;
-					if(left) begin
-						state=NEXT;
-					end
-					else begin
-						state=PAUSE;
-					end
-				end
-				NEXT: begin
-					sel=0;
-					win=0;
-					stage_up=1;
-					game_state_en=0;
-					state=INIT;
-				end
-				OVER: begin
-					sel=0;
-					win=1;
-					stage_up=0;
-					game_state_en=0;
-					state=OVER;
-				end
-				INTERIM: begin
-					if(retry) begin
-						state=INIT;
-					end
-					else if(retract) begin
-						state=RETRACT;
-					end
-					else if(game_area&&move_result) begin
-						state=MOVE;
-					end
-					else begin
+					RETRACT: begin
+						sel=3;
+						win=0;
+						stage_up=0;
+						game_state_en=1;
 						state=WAIT;
 					end
-				end
-				RETRACT: begin
-					sel=3;
-					win=0;
-					stage_up=0;
-					game_state_en=1;
-					state=WAIT;
-				end
-				MOVE: begin
-					sel=1;
-					win=0;
-					stage_up=0;
-					game_state_en=1;
-					state=WAIT;
-				end
-				default: begin
-					sel=0;
-					win=0;
-					stage_up=0;
-					game_state_en=0;
-					state=RESET;
-				end
-			endcase
+					MOVE: begin
+						sel=1;
+						win=0;
+						stage_up=0;
+						game_state_en=1;
+						state=WAIT;
+					end
+					default: begin
+						sel=0;
+						win=0;
+						stage_up=0;
+						game_state_en=1;
+						state=RESET;
+					end
+				endcase
+			end
 		end
 endmodule

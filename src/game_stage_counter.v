@@ -1,7 +1,7 @@
 //==================================================================================================
 //  Filename      : game_stage_counter.v
 //  Created On    : 2017-07-04 14:42:57
-//  Last Modified : 2017-07-04 14:50:12
+//  Last Modified : 2017-07-10 10:40:14
 //  Revision      : 
 //  Author        : Lnyan
 //  Company       : College of Information Science and Electronic Engineering, Zhejiang University
@@ -12,7 +12,7 @@
 //
 //==================================================================================================
 module game_stage_counter(clk,en,rst,q);
-	parameter N=2,CounterBits=2;
+	parameter N=4,CounterBits=2;
 	input clk,en,rst;
 	output reg[CounterBits-1:0] q=0;
 	always @(posedge clk) begin
