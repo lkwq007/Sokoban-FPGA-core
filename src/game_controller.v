@@ -1,7 +1,7 @@
 //==================================================================================================
 //  Filename      : game_controller.v
 //  Created On    : 2017-07-04 15:49:11
-//  Last Modified : 2017-07-10 10:36:13
+//  Last Modified : 2017-07-10 11:28:52
 //  Revision      : 
 //  Author        : Lnyan
 //  Company       : College of Information Science and Electronic Engineering, Zhejiang University
@@ -19,42 +19,29 @@ module game_controller(clk,game_state,move_result,destination,cursor,retry,retra
 	input[1:0] stage;
 	input[133:0] game_state;
 	output game_state_en,stage_up,win;
-	reg game_state_en,stage_up,win;
 	output[1:0] sel;
-	reg[1:0] sel;
 	wire[63:0] way,box;
 	assign way=game_state[133:70];
 	assign box=game_state[69:6];
 	reg[3:0] state=0;
+	assign sel[0]=(state==RETRACT)||(state==MOVE);
+	assign sel[1]=(state==RETRACT);
+	assign game_state_en=(state==RESET)||(state==INIT)||(state==RETRACT)||(state==MOVE);
+	assign stage_up=(state==NEXT);
+	assign win=(state==OVER);
 	always @(posedge clk) begin
 			if (reset||right) begin
 				state=RESET;
-				sel=0;
-				win=0;
-				stage_up=0;
-				game_state_en=1;
 			end
 			else begin
 				case(state)
 					RESET: begin
-						sel=0;
-						win=0;
-						stage_up=0;
-						game_state_en=1;
 						state=INIT;
 					end
 					INIT: begin
-						sel=0;
-						win=0;
-						stage_up=0;
-						game_state_en=1;
 						state=WAIT;
 					end
 					WAIT: begin
-						sel=0;
-						win=0;
-						stage_up=0;
-						game_state_en=0;
 						if(box==destination) begin
 							if(stage==2) begin
 								state=OVER;
@@ -73,10 +60,6 @@ module game_controller(clk,game_state,move_result,destination,cursor,retry,retra
 						end
 					end
 					PAUSE: begin
-						sel=0;
-						win=0;
-						stage_up=0;
-						game_state_en=0;
 						if(left) begin
 							state=NEXT;
 						end
@@ -85,17 +68,9 @@ module game_controller(clk,game_state,move_result,destination,cursor,retry,retra
 						end
 					end
 					NEXT: begin
-						sel=0;
-						win=0;
-						stage_up=1;
-						game_state_en=0;
 						state=INIT;
 					end
 					OVER: begin
-						sel=0;
-						win=1;
-						stage_up=0;
-						game_state_en=0;
 						state=OVER;
 					end
 					INTERIM: begin
@@ -113,24 +88,12 @@ module game_controller(clk,game_state,move_result,destination,cursor,retry,retra
 						end
 					end
 					RETRACT: begin
-						sel=3;
-						win=0;
-						stage_up=0;
-						game_state_en=1;
 						state=WAIT;
 					end
 					MOVE: begin
-						sel=1;
-						win=0;
-						stage_up=0;
-						game_state_en=1;
 						state=WAIT;
 					end
 					default: begin
-						sel=0;
-						win=0;
-						stage_up=0;
-						game_state_en=1;
 						state=RESET;
 					end
 				endcase
