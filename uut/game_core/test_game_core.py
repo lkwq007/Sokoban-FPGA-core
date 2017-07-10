@@ -128,7 +128,7 @@ def game_core_test(dut):
 			yield Timer(100)
 			dut.clk=0
 			yield Timer(100)
-		dut._log.info("state: "+str(dut.controller.state))
+		dut._log.info("state: "+str(dut.controller.state)+"state_up: "+str(dut.controller.stage_up))
 		dut._log.info("stage: "+str(dut.stage)+"win: "+str(dut.win))
 		label.config(text="Reset: "+str(dut.reset)+"; Area: "+str(dut.game_area)+"; Retry: "+str(dut.retry)+"; Retract: "+str(dut.retract)+"; Stage: "+str(dut.stage)+"; Win:"+str(dut.win))
 		gather_output(dut,canvas)
