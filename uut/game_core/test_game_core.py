@@ -53,7 +53,7 @@ def lmouse(event,dut,block,left):
 	dut.cursor=cursor
 	#dut.left=1
 	left.set(1)
-	block.set(0)
+	#block.set(0)
 
 def draw_object(mask,canvas,color,size):
 	for i in range(64):
@@ -123,7 +123,7 @@ def game_core_test(dut):
 			yield Timer(100)
 			break
 		else:
-			gui.wait_variable(block)
+			#gui.wait_variable(block)
 			dut.clk=1
 			yield Timer(100)
 			dut.clk=0
