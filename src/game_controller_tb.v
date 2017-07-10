@@ -1,7 +1,7 @@
 //==================================================================================================
 //  Filename      : game_controller_tb.v
 //  Created On    : 2017-07-08 09:00:34
-//  Last Modified : 2017-07-10 10:39:05
+//  Last Modified : 2017-07-10 14:44:01
 //  Revision      : 
 //  Author        : Lnyan
 //  Company       : College of Information Science and Electronic Engineering, Zhejiang University
@@ -12,7 +12,7 @@
 //
 //==================================================================================================
 module game_controller_tb();
-	parameter DELY=10; 
+	parameter DELAY=10; 
 	reg clk,retry,retract,left,game_area,reset,right,move_result;
 	reg[5:0] cursor,man;
 	reg[63:0] destination,way,box;
@@ -29,7 +29,7 @@ module game_controller_tb();
 		);
 	game_stage_counter counter_inst(.clk(clk),.en(stage_up),.rst(reset),.q(stage));
 	initial begin
-		#(DELY)
+		#(DELAY)
 		clk=0;
 		retry=0;
 		retract=0;
@@ -46,241 +46,241 @@ module game_controller_tb();
 		cursor=1;
 		//stage=0;
 
-		#(DELY)
+		#(DELAY)
 		clk=0;
-		#(DELY)
+		#(DELAY)
 		clk=1;
 		reset=1;
-		#(DELY)
+		#(DELAY)
 		clk=0;
-		#(DELY)
+		#(DELAY)
 		clk=1;
-		#(DELY)
+		#(DELAY)
 		clk=0;
-		#(DELY)
+		#(DELAY)
 		clk=1;
-		#(DELY)
+		#(DELAY)
 		clk=0;
-		#(DELY)
+		#(DELAY)
 		clk=1;
 		reset=0;
-		#(DELY)
+		#(DELAY)
 		clk=0;
-		#(DELY)
+		#(DELAY)
 		clk=1;
-		#(DELY)
+		#(DELAY)
 		clk=0;
-		#(DELY)
+		#(DELAY)
 		clk=1;
 		right=1;
-		#(DELY)
+		#(DELAY)
 		clk=0;
-		#(DELY)
+		#(DELAY)
 		clk=1;
-		#(DELY)
+		#(DELAY)
 		clk=0;
-		#(DELY)
+		#(DELAY)
 		clk=1;
-		#(DELY)
+		#(DELAY)
 		clk=0;
-		#(DELY)
+		#(DELAY)
 		clk=1;
 		right=0;
-		#(DELY)
+		#(DELAY)
 		clk=0;
-		#(DELY)
+		#(DELAY)
 		clk=1;
-		#(DELY)
+		#(DELAY)
 		clk=0;
-		#(DELY)
+		#(DELAY)
 		clk=1;
-		#(DELY)
+		#(DELAY)
 		clk=0;
-		#(DELY)
+		#(DELAY)
 		clk=1;
-		#(DELY)
+		#(DELAY)
 		clk=0;
-		#(DELY)
+		#(DELAY)
 		clk=1;
-		#(DELY)
+		#(DELAY)
 		clk=0;
-		#(DELY)
+		#(DELAY)
 		clk=1;
 		left=1;
-		#(DELY)
+		#(DELAY)
 		clk=0;
-		#(DELY)
+		#(DELAY)
 		clk=1;
 		left=0;
 		retry=1;
-		#(DELY)
+		#(DELAY)
 		clk=0;
-		#(DELY)
+		#(DELAY)
 		clk=1;
 		retry=0;
-		#(DELY)
+		#(DELAY)
 		clk=0;
-		#(DELY)
+		#(DELAY)
 		clk=1;
 		left=1;
-		#(DELY)
+		#(DELAY)
 		clk=0;
-		#(DELY)
+		#(DELAY)
 		clk=1;
 		left=0;
 		retract=1;
-		#(DELY)
+		#(DELAY)
 		clk=0;
-		#(DELY)
+		#(DELAY)
 		clk=1;
 		retract=0;
 		left=1;
-		#(DELY)
+		#(DELAY)
 		clk=0;
-		#(DELY)
+		#(DELAY)
 		clk=1;
 		//left=0;
-		#(DELY)
+		#(DELAY)
 		clk=0;
-		#(DELY)
+		#(DELAY)
 		clk=1;
-		#(DELY)
+		#(DELAY)
 		clk=0;
-		#(DELY)
+		#(DELAY)
 		clk=1;
-		#(DELY)
+		#(DELAY)
 		clk=0;
-		#(DELY)
+		#(DELAY)
 		clk=1;
 		game_area=1;
-		#(DELY)
+		#(DELAY)
 		clk=0;
-		#(DELY)
+		#(DELAY)
 		clk=1;
-		#(DELY)
+		#(DELAY)
 		clk=0;
-		#(DELY)
+		#(DELAY)
 		clk=1;
-		#(DELY)
+		#(DELAY)
 		clk=0;
-		#(DELY)
+		#(DELAY)
 		clk=1;
-		#(DELY)
+		#(DELAY)
 		clk=0;
-		#(DELY)
+		#(DELAY)
 		clk=1;
-		#(DELY)
+		#(DELAY)
 		clk=0;
-		#(DELY)
+		#(DELAY)
 		clk=1;
 		move_result=1;
-		#(DELY)
+		#(DELAY)
 		clk=0;
-		#(DELY)
+		#(DELAY)
 		clk=1;
-		#(DELY)
+		#(DELAY)
 		clk=0;
-		#(DELY)
+		#(DELAY)
 		clk=1;
-		#(DELY)
+		#(DELAY)
 		clk=0;
-		#(DELY)
+		#(DELAY)
 		clk=1;
-		#(DELY)
+		#(DELAY)
 		clk=0;
-		#(DELY)
+		#(DELAY)
 		clk=1;
-		#(DELY)
+		#(DELAY)
 		clk=0;
-		#(DELY)
+		#(DELAY)
 		clk=1;
-		#(DELY)
+		#(DELAY)
 		clk=0;
-		#(DELY)
+		#(DELAY)
 		clk=1;
-		#(DELY)
+		#(DELAY)
 		clk=0;
-		#(DELY)
+		#(DELAY)
 		clk=1;
 		destination=1;
 		left=0;
-		#(DELY)
+		#(DELAY)
 		clk=0;
-		#(DELY)
+		#(DELAY)
 		clk=1;
-		#(DELY)
+		#(DELAY)
 		clk=0;
-		#(DELY)
+		#(DELAY)
 		clk=1;
-		#(DELY)
+		#(DELAY)
 		clk=0;
-		#(DELY)
+		#(DELAY)
 		clk=1;
-		#(DELY)
+		#(DELAY)
 		clk=0;
-		#(DELY)
+		#(DELAY)
 		clk=1;
 		left=1;
-		#(DELY)
+		#(DELAY)
 		clk=0;
-		#(DELY)
+		#(DELAY)
 		clk=1;
-		#(DELY)
+		#(DELAY)
 		clk=0;
-		#(DELY)
+		#(DELAY)
 		clk=1;
-		#(DELY)
+		#(DELAY)
 		clk=0;
-		#(DELY)
+		#(DELAY)
 		clk=1;
-		#(DELY)
+		#(DELAY)
 		clk=0;
-		#(DELY)
+		#(DELAY)
 		clk=1;
-		#(DELY)
+		#(DELAY)
 		clk=0;
-		#(DELY)
+		#(DELAY)
 		clk=1;
-		#(DELY)
+		#(DELAY)
 		clk=0;
-		#(DELY)
+		#(DELAY)
 		clk=1;
-		#(DELY)
+		#(DELAY)
 		clk=0;
-		#(DELY)
+		#(DELAY)
 		clk=1;
-		#(DELY)
+		#(DELAY)
 		clk=0;
-		#(DELY)
+		#(DELAY)
 		clk=1;
-		#(DELY)
+		#(DELAY)
 		clk=0;
-		#(DELY)
+		#(DELAY)
 		clk=1;
-		#(DELY)
+		#(DELAY)
 		clk=0;
-		#(DELY)
+		#(DELAY)
 		clk=1;
-		#(DELY)
+		#(DELAY)
 		clk=0;
-		#(DELY)
+		#(DELAY)
 		clk=1;
-		#(DELY)
+		#(DELAY)
 		clk=0;
-		#(DELY)
+		#(DELAY)
 		clk=1;
-		#(DELY)
+		#(DELAY)
 		clk=0;
-		#(DELY)
+		#(DELAY)
 		clk=1;
-		#(DELY)
+		#(DELAY)
 		clk=0;
-		#(DELY)
+		#(DELAY)
 		clk=1;
 		reset=1;
-		#(DELY)
+		#(DELAY)
 		clk=0;
-		#(DELY)
+		#(DELAY)
 		clk=1;
 	end
 endmodule
