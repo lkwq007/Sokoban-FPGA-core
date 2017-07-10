@@ -12,8 +12,8 @@ from tkinter import *
 
 # since comparing 134 bit wire is wried and tedious
 # using cocotb + tkinter + iverilog (modelsim can also work) to simluate game_core design
-width=50
-height=50
+width=64
+height=64
 
 def dut_init(dut):
 	dut.clk=0
@@ -27,7 +27,7 @@ def dut_init(dut):
 
 def key(event,dut,block,flag):
 	print(event.char)
-	if event.char==27:
+	if event.char=='q':
 		flag.set(0)
 	elif event.char=='a':
 		dut.game_area=1-int(dut.game_area)
@@ -55,12 +55,12 @@ def lmouse(event,dut,block,left):
 	left.set(1)
 	#block.set(0)
 
-def draw_object(mask,canvas,color,size):
+def draw_object_color(mask,canvas,color,size):
 	for i in range(64):
 		if mask[63-i]=='1':
 			canvas.create_rectangle(i%8*width,i//8*height,i%8*width+size,i//8*height+size,fill=color)
 
-def gather_output(dut,canvas):
+def gather_output_color(dut,canvas):
 	canvas.delete(ALL)
 	wall=str(dut.wall)
 	way=str(dut.way)
@@ -74,18 +74,48 @@ def gather_output(dut,canvas):
 	canvas.create_rectangle(x%8*50,x//8*50,x%8*50+20,x//8*50+20,fill='yellow')
 	print(x)
 
+def draw_object(mask,canvas,img):
+	for i in range(64):
+		if mask[63-i]=='1':
+			canvas.create_image(i%8*width,i//8*height,anchor=NW, image=img)
+
+def gather_output(dut,canvas,img):
+	canvas.delete(ALL)
+	wall=str(dut.wall)
+	way=str(dut.way)
+	box=str(dut.box)
+	destination=str(dut.destination)
+	x=int(dut.man)
+	draw_object(wall,canvas,img["wall"])
+	draw_object(way,canvas,img["ground"])
+	draw_object(box,canvas,img["ground"])
+	draw_object(destination,canvas,img["dst"])
+	draw_object(box,canvas,img["box"])
+	for i in range(64):
+		if destination[63-i]=='1' and box[63-i]=='1':
+			canvas.create_image(i%8*width,i//8*height,anchor=NW, image=img['box_dst'])
+	canvas.create_image(x%8*width,x//8*height, anchor=NW, image=img["man"])
+	#canvas.create_rectangle(x%8*50,x//8*50,x%8*50+20,x//8*50+20,fill='yellow')
+	#print(x)
 
 @cocotb.test()
 def game_core_test(dut):
 	# init sokoban gui
 	gui=Tk()
+	img_man=PhotoImage(file="./asserts/man.png")
+	img_box=PhotoImage(file="./asserts/box.png")
+	img_box_dark=PhotoImage(file="./asserts/box_dark.png")
+	img_dst=PhotoImage(file="./asserts/dst.png")
+	img_wall=PhotoImage(file="./asserts/wall.png")
+	img_ground=PhotoImage(file="./asserts/ground.png")
+	img={"man":img_man,"box":img_box,"dst":img_dst,"wall":img_wall,"ground":img_ground,"box_dst":img_box_dark}
 	block=IntVar()
 	block.set(1)
 	flag=IntVar()
 	flag.set(1)
 	left=IntVar()
 	left.set(0)
-	canvas=Canvas(gui,width=400,height=400)
+	canvas=Canvas(gui,width=width*8,height=height*8)
 	canvas.bind("<Key>",lambda event: key(event,dut,block,flag))
 	canvas.focus_set()
 	canvas.bind("<Button-1>",lambda event: lmouse(event,dut,block,left))
@@ -108,6 +138,7 @@ def game_core_test(dut):
 	yield Timer(100)
 	while flag.get():
 		dut.left=0
+		dut._log.info("before state: "+str(dut.controller.state)+"state_up: "+str(dut.controller.stage_up))
 		if int(dut.controller.state)==2 or int(dut.controller.state)==3:
 			gui.wait_variable(left)
 			if left.get()==1:
@@ -128,10 +159,10 @@ def game_core_test(dut):
 			yield Timer(100)
 			dut.clk=0
 			yield Timer(100)
-		dut._log.info("state: "+str(dut.controller.state)+"state_up: "+str(dut.controller.stage_up))
+		dut._log.info("after state: "+str(dut.controller.state)+"state_up: "+str(dut.controller.stage_up))
 		dut._log.info("stage: "+str(dut.stage)+"win: "+str(dut.win))
 		label.config(text="Reset: "+str(dut.reset)+"; Area: "+str(dut.game_area)+"; Retry: "+str(dut.retry)+"; Retract: "+str(dut.retract)+"; Stage: "+str(dut.stage)+"; Win:"+str(dut.win))
-		gather_output(dut,canvas)
+		gather_output(dut,canvas,img)
 		gui.update()
 		
 	x=input("quit?")
