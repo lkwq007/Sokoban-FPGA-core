@@ -1,7 +1,7 @@
 //==================================================================================================
 //  Filename      : top.v
 //  Created On    : 2017-07-09 20:15:48
-//  Last Modified : 2017-07-09 20:43:08
+//  Last Modified : 2017-07-11 09:38:51
 //  Revision      : 
 //  Author        : Lnyan
 //  Company       : College of Information Science and Electronic Engineering, Zhejiang University
@@ -31,15 +31,16 @@ module top(clk,reset_n,red,green,blue,pixel_clk,vga_comp_synch,vga_blank_z,hsync
 	wire[63:0] wall,way,box,destination;
 	wire[5:0] man;
 	wire[1:0] stage;
+	wire[7:0] step;
 	wire win;
 	game_core sokoban(.clk(sys_clk),.game_area(game_area),.retract(retract),.retry(retry),
 					  .left(left),.right(right),.wall(wall),.way(way),.box(box),
-					  .destination(destination),.man(man),.stage(stage),.win(win),.reset(reset));
+					  .destination(destination),.man(man),.stage(stage),.win(win),.reset(reset),.step(step));
 
 	wire[9:0] x_pos,y_pos;
 	assign pixel_clk=sys_clk;
 	display display_inst(.clk(sys_clk),.arrow_y(arrow_y),.arrow_x(arrow_x),.wall(wall),.way(way),
-						 .box(box),.destination(destination),.man(man),.stage(stage),.win(win),
+						 .box(box),.destination(destination),.man(man),.stage(stage),.win(win),.step(step),
 						 .x_pos(x_pos),.y_pos(y_pos));
 	
 endmodule

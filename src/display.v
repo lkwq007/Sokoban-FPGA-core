@@ -1,7 +1,7 @@
 //==================================================================================================
 //  Filename      : display.v
 //  Created On    : 2017-07-09 20:39:46
-//  Last Modified : 2017-07-09 21:00:44
+//  Last Modified : 2017-07-11 09:39:27
 //  Revision      : 
 //  Author        : Lnyan
 //  Company       : College of Information Science and Electronic Engineering, Zhejiang University
@@ -19,6 +19,7 @@ module display(/*autoport*/
 //input
 			clk,
 			win,
+			step,
 			x_pos,
 			y_pos,
 			wall,
@@ -30,6 +31,7 @@ module display(/*autoport*/
 			arrow_y,
 			stage);
 	input clk,win;
+	input[7:0] step;
 	input[9:0] x_pos,y_pos;
 	input[63:0] wall,way,box,destination;
 	input[5:0] man;
@@ -53,7 +55,7 @@ module display(/*autoport*/
 		.RqFlag1(req_1),.Red1(Red1),.Blue1(Blue1),.Green1(Green1)
 		);
 	layer_bottom layer_bottom_inst(
-		.sys_clk(clk),.y_pos(y_pos),.x_pos(x_pos),.stage(stage),.win(win),
+		.sys_clk(clk),.y_pos(y_pos),.x_pos(x_pos),.stage(stage),.win(win),.step(step),
 		.RqFlag0(req_0),.Red0(Red0),.Blue0(Blue0),.Green0(Green0)
 		);
 	layer_sel layer_sel_inst(
