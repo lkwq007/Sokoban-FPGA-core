@@ -1,7 +1,7 @@
 //==================================================================================================
 //  Filename      : game_controller.v
 //  Created On    : 2017-07-04 15:49:11
-//  Last Modified : 2017-07-10 11:28:52
+//  Last Modified : 2017-07-11 00:32:59
 //  Revision      : 
 //  Author        : Lnyan
 //  Company       : College of Information Science and Electronic Engineering, Zhejiang University
@@ -11,15 +11,38 @@
 //
 //
 //==================================================================================================
-module game_controller(clk,game_state,move_result,destination,cursor,retry,retract,left,game_area,reset,right,stage,stage_up,game_state_en,sel,win);
+module game_controller(/*autoport*/
+//output
+			game_state_en,
+			stage_up,
+			win,
+			sel,
+			step_inc,
+			step_dec,
+//input
+			clk,
+			retry,
+			retract,
+			left,
+			game_area,
+			reset,
+			right,
+			move_result,
+			cursor,
+			destination,
+			stage,
+			game_state,
+			real_retract);
 	parameter RESET=4'h0,INIT=4'h1,WAIT=4'h2,PAUSE=4'h3,OVER=4'h4,NEXT=4'h5,INTERIM=4'h6,RETRACT=4'h7,MOVE=4'h8;
 	input clk,retry,retract,left,game_area,reset,right,move_result;
 	input[5:0] cursor;
 	input[63:0] destination;
 	input[1:0] stage;
 	input[133:0] game_state;
+	input real_retract;
 	output game_state_en,stage_up,win;
 	output[1:0] sel;
+	output step_inc,step_dec;
 	wire[63:0] way,box;
 	assign way=game_state[133:70];
 	assign box=game_state[69:6];
@@ -29,6 +52,8 @@ module game_controller(clk,game_state,move_result,destination,cursor,retry,retra
 	assign game_state_en=(state==RESET)||(state==INIT)||(state==RETRACT)||(state==MOVE);
 	assign stage_up=(state==NEXT);
 	assign win=(state==OVER);
+	assign step_inc=(state==MOVE);
+	assign step_dec=(state==RETRACT);
 	always @(posedge clk) begin
 			if (reset||right) begin
 				state=RESET;
@@ -77,7 +102,7 @@ module game_controller(clk,game_state,move_result,destination,cursor,retry,retra
 						if(retry) begin
 							state=INIT;
 						end
-						else if(retract) begin
+						else if(retract&&real_retract) begin
 							state=RETRACT;
 						end
 						else if(game_area&&move_result) begin
