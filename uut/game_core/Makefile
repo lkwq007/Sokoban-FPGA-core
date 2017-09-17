@@ -19,6 +19,7 @@ VERILOG_SOURCES += $(TOPDIR)/game_man_move.v
 VERILOG_SOURCES += $(TOPDIR)/game_mux_4.v
 VERILOG_SOURCES += $(TOPDIR)/game_retract.v
 VERILOG_SOURCES += $(TOPDIR)/game_stage_counter.v
+VERILOG_SOURCES += $(TOPDIR)/game_step_counter.v
 
 TOPLEVEL = game_core
 MODULE = test_game_core

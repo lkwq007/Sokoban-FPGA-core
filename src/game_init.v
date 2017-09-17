@@ -1,7 +1,7 @@
 //==================================================================================================
 //  Filename      : game_init.v
 //  Created On    : 2017-07-04 14:50:45
-//  Last Modified : 2017-07-10 16:09:25
+//  Last Modified : 2017-07-19 12:04:37
 //  Revision      : 
 //  Author        : Lnyan
 //  Company       : College of Information Science and Electronic Engineering, Zhejiang University
@@ -30,10 +30,15 @@ module game_init(stage,wall,destination,game_state_int);
 				destination=64'h003c_0400_0000_0000;
 				game_state_int={64'h002c_3428_1014_1800,64'h0010_0810_0808_0000,3'o2,3'o2};
 			end
-			default: begin
-				wall=64'h7e42_4246_6622_263c;
-				destination=64'h003c_0400_0000_0000;
-				game_state_int={64'h002c_3428_1014_1800,64'h0010_0810_0808_0000,3'o2,3'o2};
+			2: begin
+				wall=64'hFF9181838191FF00;
+				destination=64'h0000181818000000;
+				game_state_int={64'h006E5A545A6E0000,64'h0000242824000000,6'o46};
+			end
+			3: begin
+				wall=64'hFF8189C34266243C;
+				destination=64'h20101800;
+				game_state_int={64'h7E46342C181800,64'h300810000000,6'o63};
 			end
 		endcase
 	end
